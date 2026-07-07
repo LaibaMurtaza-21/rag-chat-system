@@ -38,11 +38,12 @@ class ChatHistory:
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         cursor.execute(
-            "SELECT role, content FROM messages WHERE session_id = ? ORDER BY id ASC LIMIT ?",
+            "SELECT role, content FROM messages WHERE session_id = ? ORDER BY id DESC LIMIT ?",
             (session_id, limit)
         )
         rows = cursor.fetchall()
         conn.close()
+        rows.reverse()
         return [{"role": r, "content": c} for r, c in rows]
 
     def list_sessions(self):
