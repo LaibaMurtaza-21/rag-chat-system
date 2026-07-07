@@ -5,7 +5,7 @@ A Retrieval-Augmented Generation (RAG) chat application that answers questions u
 
 ## Project Report
 
-See [RAG_Project_Report.pdf](./RAG_Project_Report.pdf) for the full project report, including architecture, implementation details, and debugging process.
+See [RAG_Project_Report.pdf](https://github.com/LaibaMurtaza-21/rag-chat-system/raw/main/RAG_Project_Report.pdf) for the full project report, including architecture, implementation details, and debugging process.
 
 ## Features
 
