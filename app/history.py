@@ -1,10 +1,12 @@
 import sqlite3
+import os
 from app.config import SQLITE_DB_PATH
 
 
 class ChatHistory:
     def __init__(self):
         self.db_path = SQLITE_DB_PATH
+        os.makedirs(os.path.dirname(self.db_path), exist_ok=True)
         self._init_db()
 
     def _init_db(self):
@@ -42,6 +44,17 @@ class ChatHistory:
         rows = cursor.fetchall()
         conn.close()
         return [{"role": r, "content": c} for r, c in rows]
+
+    def list_sessions(self):
+        """Return all distinct session IDs, most recent first."""
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT DISTINCT session_id FROM messages ORDER BY MAX(timestamp) DESC"
+        )
+        rows = cursor.fetchall()
+        conn.close()
+        return [r[0] for r in rows]
 
 
 # Singleton instance
