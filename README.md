@@ -136,9 +136,9 @@ The chat interface will open at `http://localhost:8501`.
 
 The assistant recalls information stated earlier in the same session and uses it to answer follow-up questions:
 
-![Chat memory demo](screenshots/session-memory-demo.jpg)
+![Chat memory demo](./screenshots/session-memory-demo.jpg)
 
-*In this example, the user states their name, and the assistant correctly recalls it two messages later — proving conversation history is being read back into the prompt, not just stored.*
+In this example, the user states their name, and the assistant correctly recalls it two messages later — proving conversation history is being read back into the prompt, not just stored.
 
 ## Example
 
@@ -150,12 +150,13 @@ The assistant recalls information stated earlier in the same session and uses it
 
 ## Troubleshooting
 
-- **`Internal Server Error` on `/sessions`** — Usually means `app/history.py` has an indentation or SQL syntax issue in `list_sessions()`. Check the uvicorn terminal for the full traceback; a `misuse of aggregate: MAX()` error means the query needs `GROUP BY session_id` instead of `SELECT DISTINCT`.
+- **Internal Server Error on `/sessions`** — Usually means `app/history.py` has an indentation or SQL syntax issue in `list_sessions()`. Check the uvicorn terminal for the full traceback; a `misuse of aggregate: MAX()` error means the query needs `GROUP BY session_id` instead of `SELECT DISTINCT`.
 - **Sidebar doesn't show "Resume a past session"** — This only appears once at least one session has a saved message. Send a chat message first, then refresh the page.
-- **Assistant doesn't remember earlier messages in the same session** — Check `get_history()` in `app/history.py` is ordering by `id DESC LIMIT ?` and then reversing the result, so it returns the *most recent* messages (not the oldest).
+- **Assistant doesn't remember earlier messages in the same session** — Check `get_history()` in `app/history.py` is ordering by `id DESC LIMIT ?` and then reversing the result, so it returns the most recent messages (not the oldest).
 - **Backend changes not taking effect** — Confirm uvicorn is running with `--reload` and that you saved the file; look for a `Reloading...` line in that terminal after saving.
 
 ## Notes
 
 - The `storage/` folder (ChromaDB + SQLite files), `venv/`, and `.env` are excluded from version control via `.gitignore`.
 - Chat sessions are identified by a UUID generated per browser session; history persists in `storage/history.db` across app restarts.
+```
