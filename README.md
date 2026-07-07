@@ -1,7 +1,11 @@
 ```markdown
 # RAG Chat System
 
-A Retrieval-Augmented Generation (RAG) chat application that answers questions using both your own documents and general knowledge, while maintaining persistent conversation memory across sessions — including the ability to resume a past session after closing the app.
+A Retrieval-Augmented Generation (RAG) chat application that answers questions using both your own documents and general knowledge, while maintaining persistent conversation memory across sessions.
+
+## Project Report
+
+See [RAG_Project_Report.pdf](./RAG_Project_Report.pdf) for the full project report, including architecture, implementation details, and debugging process.
 
 ## Features
 
