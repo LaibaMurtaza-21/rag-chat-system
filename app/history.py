@@ -50,7 +50,7 @@ class ChatHistory:
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         cursor.execute(
-            "SELECT DISTINCT session_id FROM messages ORDER BY MAX(timestamp) DESC"
+            "SELECT session_id FROM messages GROUP BY session_id ORDER BY MAX(timestamp) DESC"
         )
         rows = cursor.fetchall()
         conn.close()
