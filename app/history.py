@@ -21,6 +21,12 @@ class ChatHistory:
                 timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
             )
         """)
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS memory_facts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                fact TEXT NOT NULL UNIQUE
+            )
+        """)
         conn.commit()
         conn.close()
 
@@ -53,6 +59,26 @@ class ChatHistory:
         cursor.execute(
             "SELECT session_id FROM messages GROUP BY session_id ORDER BY MAX(timestamp) DESC"
         )
+        rows = cursor.fetchall()
+        conn.close()
+        return [r[0] for r in rows]
+
+    def add_fact(self, fact: str):
+        """Store a permanent fact about the user (persists across all future chats)."""
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT OR IGNORE INTO memory_facts (fact) VALUES (?)",
+            (fact,)
+        )
+        conn.commit()
+        conn.close()
+
+    def get_all_facts(self):
+        """Return every permanently stored fact about the user."""
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        cursor.execute("SELECT fact FROM memory_facts")
         rows = cursor.fetchall()
         conn.close()
         return [r[0] for r in rows]
