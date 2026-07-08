@@ -1,4 +1,4 @@
-﻿# RAG Chat System
+# RAG Chat System
 
 A Retrieval-Augmented Generation (RAG) chat application that answers questions using both your own documents and general knowledge, while maintaining persistent conversation memory across sessions - including permanent facts about the user, recalled automatically in brand-new chats.
 
@@ -146,7 +146,7 @@ In this example, the user states their name, and the assistant correctly recalls
 
 The assistant also remembers personal facts permanently, across completely new sessions - not just within one conversation:
 
-![Cross-session memory demo](./screenshots/cross-session-memory-demo.jpg)
+![Cross-session memory demo](./screenshots/cross-session-memory-demo.jpeg)
 
 In this example, the user starts a brand-new session (no shared history with any prior chat) and asks "what do you know about me?". The assistant correctly recalls the user's name, gender, and field of study from facts learned in a previous, unrelated session - demonstrating true persistent memory similar to ChatGPT's memory feature.
 
