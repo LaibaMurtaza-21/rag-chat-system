@@ -1,3 +1,4 @@
+# Quick test to verify the Groq API connection is working.
 from dotenv import load_dotenv
 from groq import Groq
 import os

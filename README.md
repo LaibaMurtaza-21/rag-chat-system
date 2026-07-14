@@ -2,10 +2,6 @@
 
 A Retrieval-Augmented Generation (RAG) chat application that answers questions using both your own documents and general knowledge, while maintaining persistent conversation memory across sessions - including permanent facts about the user, recalled automatically in brand-new chats.
 
-## Project Report
-
-See [RAG_Project_Report.pdf](https://github.com/LaibaMurtaza-21/rag-chat-system/raw/main/RAG_Project_Report.pdf) for the full project report, including architecture, implementation details, and debugging process.
-
 ## Features
 
 - **Chat Interface** - Interactive chat UI built with Streamlit
@@ -72,26 +68,30 @@ rag-chat-system/
 | GET    | `/history/{session_id}`    | Retrieve the full message history for a session   |
 | GET    | `/`                          | Health check - confirms the API is running        |
 
-## Setup Instructions
+## Setup Instructions (Windows / PowerShell)
 
 ### 1. Clone the repository
 
-```bash
+```powershell
 git clone https://github.com/LaibaMurtaza-21/rag-chat-system.git
 cd rag-chat-system
 ```
 
 ### 2. Create a virtual environment
 
-```bash
+```powershell
 python -m venv venv
-venv\Scripts\activate        # Windows
-source venv/bin/activate     # Mac/Linux
+.\venv\Scripts\Activate.ps1
 ```
+
+> If PowerShell blocks the script with an execution policy error, run this once, then re-activate:
+> ```powershell
+> Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
+> ```
 
 ### 3. Install dependencies
 
-```bash
+```powershell
 pip install -r requirements.txt
 ```
 
@@ -109,29 +109,30 @@ Get a free API key at [console.groq.com](https://console.groq.com) (no credit ca
 
 Place `.txt` files in the `data/` folder, then run:
 
-```bash
+```powershell
 python ingest.py
 ```
 
 ### 6. Start the backend
 
-```bash
+```powershell
 uvicorn app.main:app --reload
 ```
 
-### 7. Start the frontend (in a separate terminal)
+### 7. Start the frontend (in a separate PowerShell terminal)
 
-```bash
+```powershell
+.\venv\Scripts\Activate.ps1
 streamlit run ui/streamlit_app.py
 ```
 
-The chat interface will open at `http://localhost:8501`.
+> Both the backend (step 6) and frontend (step 7) must be running **at the same time**, in two separate terminals. The chat interface will open at `http://localhost:8501`.
 
 ## Using Session Resume
 
 1. Ask a question in the chat - it's automatically saved under your current session ID (shown in the sidebar).
 2. Click **"Start new session"** to begin a fresh conversation.
-3. In the sidebar, use the **"Resume a past session"** dropdown to select an earlier session ID, then click **"Load this session"**.
+3. In the sidebar, use the **"Resume a past session"** dropdown to select an earlier session ID - it loads automatically.
 4. Your previous messages reload, and the assistant retains that conversation's context for follow-up questions.
 
 ## Demo - Chat Memory in Action
@@ -165,6 +166,8 @@ In this example, the user starts a brand-new session (no shared history with any
 - **Assistant doesn't remember earlier messages in the same session** - Check `get_history()` in `app/history.py` is ordering by `id DESC LIMIT ?` and then reversing the result, so it returns the most recent messages (not the oldest).
 - **ImportError: cannot import name chat_history** - Means `app/history.py` is missing its final `chat_history = ChatHistory()` singleton line, usually from an incomplete paste. Re-paste the full file and confirm with `Select-String -Path app\history.py -Pattern "chat_history = ChatHistory"`.
 - **Backend changes not taking effect** - Confirm uvicorn is running with `--reload` and that you saved the file; look for a `Reloading...` line in that terminal after saving.
+- **`requests.exceptions.ConnectionError` in Streamlit** - Means the FastAPI backend isn't running. Open a second PowerShell terminal, run `.\venv\Scripts\Activate.ps1`, then `uvicorn app.main:app --reload`. Both the backend and frontend must run at the same time, in separate terminals.
+- **`.ps1 cannot be loaded because running scripts is disabled on this system`** - Run `Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned` in that PowerShell window, then re-run the activation command.
 
 ## Notes
 
